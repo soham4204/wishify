@@ -1,12 +1,22 @@
 // src/App.js
 import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast'; 
+import Home from './pages/Home';
+import Creator from './pages/Creator';
+import BirthdayPage from './pages/BirthdayPage';
+import NotFound from './pages/NotFound';
 
 function App() {
   return (
-    <div className="bg-gray-100 min-h-screen flex items-center justify-center">
-      <h1 className="text-4xl font-bold text-blue-600">
-        🎉 Birthday Wish Platform (CRA) Setup Complete! 🎉
-      </h1>
+    <div className="App">
+      <Toaster position="top-center" reverseOrder={false} /> 
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/create" element={<Creator />} />
+        <Route path="/:birthdayId" element={<BirthdayPage />} /> 
+        <Route path="*" element={<NotFound />} /> 
+      </Routes>
     </div>
   );
 }

@@ -2,3 +2,53 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* --- Digital Candle CSS --- */
+.cake {
+  position: relative;
+  width: 200px;
+  height: 100px;
+  background: #f7b3c1; /* Cake icing */
+  border-radius: 10px 10px 50px 50px;
+  margin: 40px auto;
+}
+
+.candle {
+  position: absolute;
+  width: 10px;
+  height: 40px;
+  background: #fff;
+  border-radius: 5px;
+  bottom: 100%;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.flame {
+  position: absolute;
+  width: 10px;
+  height: 15px;
+  background: #ffc107;
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  bottom: 100%;
+  left: 0;
+  animation: flicker 1.5s ease-in-out infinite;
+  transform-origin: bottom;
+  opacity: 1;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.flame-out {
+  opacity: 0;
+  transform: scaleY(0) translateY(10px);
+}
+
+@keyframes flicker {
+  0%, 100% {
+    transform: scaleY(1) scaleX(1);
+    background: #ffc107;
+  }
+  50% {
+    transform: scaleY(0.9) scaleX(1.1);
+    background: #ffecb3;
+  }
+}
