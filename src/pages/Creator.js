@@ -12,6 +12,8 @@ import DateSelector from '../components/creator/DateSelector';
 import AnalyticsToggle from '../components/creator/AnalyticsToggle';
 import LayoutSelector from '../components/creator/LayoutSelector';
 import VoiceMessageRecorder from '../components/creator/VoiceMessageRecorder';
+import AgeInput from '../components/creator/AgeInput';
+import PreviewButton from '../components/creator/PreviewButton';
 
 const Creator = () => {
   // 2. Get all state for the debug section
@@ -22,7 +24,7 @@ const Creator = () => {
   const messages = useCreatorStore((state) => state.messages);
   const birthdayDate = useCreatorStore((state) => state.birthdayDate);
   const customMessage = useCreatorStore((state) => state.customMessage);
-  
+
   return (
     <div className="p-8 min-h-screen bg-gray-50">
       <div className="max-w-4xl mx-auto">
@@ -33,6 +35,7 @@ const Creator = () => {
         {/* --- Step 1: Name Input --- */}
         <div className="bg-white p-8 rounded-xl shadow-lg mb-8">
           <NameInput />
+          <AgeInput />
         </div>
         
         {/* --- Step 2: Image Upload --- */}
@@ -79,7 +82,10 @@ const Creator = () => {
 
         {/* --- Step 5: Publish (was Step 4) --- */}
         <div className="bg-white p-8 rounded-xl shadow-lg mb-8">
-          <PublishLink />
+          <div className="flex flex-col md:flex-row gap-4 justify-center">
+            <PreviewButton /> {/* 2. Add Preview button */}
+            <PublishLink />
+          </div>
         </div>
 
         {/* --- Debugging: Show current state (Optional) --- */}

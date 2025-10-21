@@ -25,7 +25,13 @@ export const useCreatorStore = create((set) => ({
   // Core setters
   setBirthdayPersonName: (name) => set({ birthdayPersonName: name }),
   setCreatorName: (name) => set({ creatorName: name }),
-  setAge: (age) => set({ age }),
+  setAge: (age) => {
+    // FR-22.4: Support ages 1-150
+    const newAge = age === '' ? null : parseInt(age, 10);
+    if (newAge === null || (newAge >= 1 && newAge <= 150)) {
+      set({ age: newAge });
+    }
+  },
   setBirthdayDate: (date) => set({ birthdayDate: date }),
   setCustomMessage: (message) => set({ customMessage: message }),
   setVoiceMessage: (url) => set({ voiceMessage: url }),

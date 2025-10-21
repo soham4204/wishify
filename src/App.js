@@ -14,7 +14,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/create" element={<Creator />} />
-        <Route path="/:birthdayId" element={<BirthdayPage />} /> 
+        <Route path="/:birthdayId" element={<BirthdayPage />} />
+        <Route path="/preview" element={<BirthdayPage isPreview={true} />} /> 
         <Route path="*" element={<NotFound />} /> 
       </Routes>
     </div>

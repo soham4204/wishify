@@ -50,7 +50,7 @@ const MessageBalloons = ({ messages = [], themeId }) => {
   return (
     <div className="fixed inset-0 z-40 pointer-events-none">
       {!allPopped && (
-        <p className={`absolute top-24 left-1/2 -translate-x-1/2 text-lg ${theme.text} opacity-80 animate-pulse`}>
+        <p className={`absolute left-1/2 -translate-x-1/2 text-lg ${theme.text} opacity-80 animate-pulse`}>
           Pop the balloons!
         </p>
       )}
