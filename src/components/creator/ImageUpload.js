@@ -1,6 +1,7 @@
 // src/components/creator/ImageUpload.js
 import React, { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
+import { motion } from 'framer-motion';
 import { useCreatorStore } from '../../hooks/useCreatorStore';
 import { uploadImage } from '../../services/cloudinary';
 
@@ -50,83 +51,124 @@ const ImageUpload = () => {
 
   return (
     <div className="w-full">
-      <label className="block text-xl font-medium text-gray-800 mb-2">
+      <motion.label 
+        className="block text-xl font-semibold text-slate-800 mb-3"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1 }}
+      >
         Add Photos (Max 20)
-      </label>
+      </motion.label>
       
-      {/* --- Dropzone (FR-3.1, FR-3.2) --- */}
-      <div
+      {/* --- Enhanced Dropzone --- */}
+      <motion.div
         {...getRootProps()}
-        className={`border-4 border-dashed rounded-lg p-10 text-center cursor-pointer transition-colors
-                   ${isDragActive ? 'border-blue-500 bg-blue-50' : 'border-gray-300 bg-gray-50 hover:border-gray-400'}`}
+        className={`border-2 border-dashed rounded-xl p-12 text-center cursor-pointer transition-all duration-300
+                   ${isDragActive ? 'border-violet-500 bg-violet-50/50 scale-105' : 'border-violet-300 bg-violet-50/30 hover:border-violet-400 hover:bg-violet-50/50'}`}
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.2 }}
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
       >
         <input {...getInputProps()} />
-        <p className="text-gray-500">
-          Drag 'n' drop some pictures here, or click to select files
-        </p>
-        <p className="text-sm text-gray-400">(JPG, PNG, GIF, WebP)</p>
-      </div>
-
-      {/* --- Progress Indicator (FR-3.5) --- */}
-      {isUploading && (
-        <div className="mt-4 text-center">
-          <p className="font-semibold text-blue-600 animate-pulse">
-            Uploading...
+        <div className="space-y-2">
+          <svg className="mx-auto h-12 w-12 text-violet-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+            <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+          <p className="text-slate-600 font-medium">
+            Drag 'n' drop some pictures here, or click to select files
           </p>
+          <p className="text-sm text-slate-400">(JPG, PNG, GIF, WebP)</p>
         </div>
+      </motion.div>
+
+      {/* --- Progress Indicator --- */}
+      {isUploading && (
+        <motion.div 
+          className="mt-6 text-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+        >
+          <div className="inline-flex items-center space-x-2">
+            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-violet-600"></div>
+            <p className="font-semibold text-violet-600">
+              Uploading...
+            </p>
+          </div>
+        </motion.div>
       )}
 
-      {/* --- Thumbnail Previews (FR-3.11) --- */}
+      {/* --- Enhanced Thumbnail Previews --- */}
       {images.length > 0 && (
-        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-          {images.map((image) => (
-            <div key={image.id} className="flex gap-3 p-3 bg-gray-50 border rounded-lg">
-              {/* Thumbnail */}
+        <motion.div 
+          className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+        >
+          {images.map((image, index) => (
+            <motion.div 
+              key={image.id} 
+              className="flex gap-4 p-4 bg-white/50 backdrop-blur-sm border border-slate-200 rounded-xl shadow-md hover:shadow-lg transition-all duration-200"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 * index }}
+              whileHover={{ scale: 1.02 }}
+            >
+              {/* Enhanced Thumbnail */}
               <div className="relative group w-24 h-24 flex-shrink-0">
                 <img
                   src={image.url}
                   alt="Uploaded thumbnail"
                   className="w-full h-full object-cover rounded-lg shadow-md"
                 />
-                <button
+                <motion.button
                   onClick={() => removeImage(image.id)}
-                  className="absolute top-1 right-1 bg-red-600 text-white rounded-full 
-                             w-5 h-5 flex items-center justify-center text-xs font-bold
-                             opacity-0 group-hover:opacity-100 transition-opacity"
+                  className="absolute -top-2 -right-2 bg-red-500 hover:bg-red-600 text-white rounded-full 
+                             w-6 h-6 flex items-center justify-center text-sm font-bold
+                             shadow-lg transition-all duration-200"
                   aria-label="Delete image"
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
                 >
                   &times;
-                </button>
+                </motion.button>
               </div>
               
-              {/* --- 3. Add Caption & Date Inputs --- */}
-              <div className="flex-grow space-y-2">
+              {/* Enhanced Caption & Date Inputs */}
+              <div className="flex-grow space-y-3">
                 <input
                   type="text"
                   placeholder="Add a caption..."
                   value={image.caption}
                   onChange={(e) => handleDetailChange(image.id, 'caption', e.target.value)}
-                  className="w-full px-2 py-1 border border-gray-300 rounded text-sm"
+                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-violet-500 focus:border-violet-500 transition-all duration-200"
                 />
                 <input
                   type="text"
                   placeholder="Date or Year (e.g., '2015')"
                   value={image.date}
                   onChange={(e) => handleDetailChange(image.id, 'date', e.target.value)}
-                  className="w-full px-2 py-1 border border-gray-300 rounded text-sm"
+                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-violet-500 focus:border-violet-500 transition-all duration-200"
                 />
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       )}
 
-      {/* --- Default Images (FR-3.8) - Placeholder --- */}
+      {/* --- Default Images Message --- */}
       {images.length === 0 && !isUploading && (
-        <div className="mt-4 text-center text-gray-500">
-          <p>No images added yet. Upload some to make it personal!</p>
-          <p>(We'll show default images if you don't add any)</p>
-        </div>
+        <motion.div 
+          className="mt-6 text-center text-slate-500"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+        >
+          <p className="font-medium">No images added yet. Upload some to make it personal!</p>
+          <p className="text-sm">(We'll show default images if you don't add any)</p>
+        </motion.div>
       )}
     </div>
   );

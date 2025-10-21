@@ -3,21 +3,50 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Global styles */
+body {
+  @apply font-sans antialiased bg-gradient-to-br from-slate-50 to-violet-50;
+}
+
+/* Glassmorphism utility classes */
+.glass-panel {
+  @apply bg-white/70 backdrop-blur-lg border border-slate-200 rounded-xl shadow-lg;
+}
+
+.glass-modal {
+  @apply bg-white/80 backdrop-blur-xl border border-slate-200 rounded-xl shadow-xl;
+}
+
+/* Primary button styles */
+.btn-primary {
+  @apply bg-violet-600 hover:bg-violet-700 text-white font-medium px-6 py-3 rounded-lg shadow-md hover:shadow-lg transition-all duration-200;
+}
+
+.btn-secondary {
+  @apply bg-slate-700 hover:bg-slate-800 text-white font-medium px-6 py-3 rounded-lg shadow-md hover:shadow-lg transition-all duration-200;
+}
+
+/* Input styles */
+.input-field {
+  @apply w-full px-4 py-3 text-lg border border-slate-200 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-violet-500 transition-all duration-200;
+}
+
 /* --- Digital Candle CSS --- */
 .cake {
   position: relative;
   width: 200px;
   height: 100px;
-  background: #f7b3c1; /* Cake icing */
+  background: linear-gradient(135deg, #f7b3c1, #f8c8d4); /* Enhanced gradient */
   border-radius: 10px 10px 50px 50px;
   margin: 40px auto;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
 .candle {
   position: absolute;
   width: 10px;
   height: 40px;
-  background: #fff;
+  background: linear-gradient(to bottom, #fff, #f8f9fa);
   border-radius: 5px;
   bottom: 100%;
   box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
@@ -27,7 +56,7 @@
   position: absolute;
   width: 10px;
   height: 15px;
-  background: #ffc107;
+  background: radial-gradient(circle, #ffc107, #ff8f00);
   border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
   bottom: 100%;
   left: 0;
@@ -45,15 +74,15 @@
 @keyframes flicker {
   0%, 100% {
     transform: scaleY(1) scaleX(1);
-    background: #ffc107;
+    background: radial-gradient(circle, #ffc107, #ff8f00);
   }
   50% {
     transform: scaleY(0.9) scaleX(1.1);
-    background: #ffecb3;
+    background: radial-gradient(circle, #ffecb3, #ffc107);
   }
 }
 
-/* --- Balloon Animation CSS (FR-11.2) --- */
+/* --- Enhanced Balloon Animation CSS --- */
 .balloon {
   position: absolute;
   width: 100px;
@@ -67,22 +96,24 @@
   font-weight: bold;
   cursor: pointer;
   user-select: none;
-  bottom: -150px; /* Start off-screen */
+  bottom: -150px;
   animation: float 15s ease-in-out infinite;
   pointer-events: auto;
   transition: transform 0.3s ease, opacity 0.3s ease;
   z-index: 10;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.3), transparent 50%);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
-/* Balloon string */
+/* Enhanced balloon string */
 .balloon::after {
   content: '';
   position: absolute;
-  top: 118px; /* Just below the balloon */
+  top: 118px;
   left: 50%;
-  width: 2px;
+  width: 1px;
   height: 80px;
-  background: rgba(0, 0, 0, 0.2);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.1));
   transform: translateX(-50%);
 }
 
@@ -98,7 +129,7 @@
   }
 }
 
-/* Pop Animation (FR-11.4) */
+/* Pop Animation */
 .balloon.popped {
   transform: scale(1.5);
   opacity: 0;
@@ -158,25 +189,27 @@
   font-style: italic;
 }
 
+/* Enhanced Timeline CSS */
 .timeline-container {
   position: relative;
   max-width: 600px;
   margin: 0 auto;
 }
 
-/* The vertical line */
+/* Enhanced vertical line with gradient */
 .timeline-container::after {
   content: '';
   position: absolute;
   width: 4px;
-  background-color: #cbd5e1; /* gray-300 */
+  background: linear-gradient(to bottom, #8b5cf6, #a855f7, #c084fc);
   top: 0;
   bottom: 0;
   left: 50%;
   margin-left: -2px;
+  border-radius: 2px;
 }
 
-/* A single timeline item */
+/* Timeline item */
 .timeline-item {
   position: relative;
   padding: 10px 40px;
@@ -195,7 +228,7 @@
   text-align: left;
 }
 
-/* The "dot" on the timeline (FR-20.5) */
+/* Enhanced timeline dot with pulse animation */
 .timeline-item::after {
   content: '';
   position: absolute;
@@ -203,10 +236,12 @@
   height: 20px;
   right: -10px;
   background-color: white;
-  border: 4px solid #3b82f6; /* blue-500 */
+  border: 4px solid #8b5cf6;
   top: 20px;
   border-radius: 50%;
   z-index: 1;
+  animation: pulse-slow 2s infinite;
+  box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.4);
 }
 
 /* Dot position for right items */
@@ -214,11 +249,13 @@
   left: -10px;
 }
 
-/* The content box */
+/* Enhanced content box */
 .timeline-content {
   padding: 20px;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }

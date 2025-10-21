@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-// A single sparkle particle
+// Enhanced sparkle particle
 const Sparkle = () => {
   // Randomize properties for each sparkle
   const size = Math.random() * 20 + 5;
@@ -18,15 +18,19 @@ const Sparkle = () => {
         position: 'absolute',
         width: size,
         height: size,
-        backgroundColor: '#FFD700', // Gold
+        background: 'radial-gradient(circle, #FFD700, #FFA500)',
         borderRadius: '50%',
-        boxShadow: '0 0 10px #FFD700, 0 0 20px #FFD700',
+        boxShadow: '0 0 15px #FFD700, 0 0 30px #FFD700, 0 0 45px #FFD700',
         x,
         y,
         rotate,
       }}
       initial={{ opacity: 0, scale: 0 }}
-      animate={{ opacity: [0, 1, 0], scale: [0, 1, 0] }} // FR-21.3
+      animate={{ 
+        opacity: [0, 1, 0], 
+        scale: [0, 1.2, 0],
+        rotate: [0, 360]
+      }}
       transition={{ duration, delay, repeat: Infinity, repeatDelay: 1 }}
     />
   );
@@ -37,11 +41,11 @@ const MakeAWish = ({ theme }) => {
   const [showInspiration, setShowInspiration] = useState(false);
 
   const handleWish = () => {
-    setHasWished(true); // FR-21.2
+    setHasWished(true);
     
-    // FR-21.4: Animation lasts 3-5 seconds. We'll stop it after 4s.
+    // Animation lasts 3-5 seconds. We'll stop it after 4s.
     setTimeout(() => {
-      setShowInspiration(true); // FR-21.5
+      setShowInspiration(true);
     }, 4000);
   };
 
@@ -58,16 +62,24 @@ const MakeAWish = ({ theme }) => {
   );
 
   return (
-    <div className="w-full flex flex-col items-center justify-center my-12 h-48">
+    <motion.div 
+      className="w-full flex flex-col items-center justify-center my-16 h-64"
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+    >
       <AnimatePresence>
         {!hasWished && (
           <motion.button
             key="button"
             exit={{ opacity: 0, scale: 0.5 }}
             onClick={handleWish}
-            className={`px-8 py-4 ${theme.text} font-bold text-2xl rounded-lg shadow-lg
-                        hover:opacity-90 transition-all`}
-            style={{ backgroundColor: theme.confetti[1] || '#a5f3fc' }}
+            className="px-12 py-6 bg-gradient-to-r from-violet-600 via-purple-600 to-pink-600 text-white font-bold text-2xl rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ type: "spring", damping: 15, stiffness: 300 }}
           >
             ✨ Make a Wish! ✨ 
           </motion.button>
@@ -76,30 +88,49 @@ const MakeAWish = ({ theme }) => {
         {hasWished && !showInspiration && (
           <motion.div
             key="sparkles"
-            className="relative w-48 h-48 flex items-center justify-center"
+            className="relative w-64 h-64 flex items-center justify-center"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            {/* Create 30 sparkle particles */}
-            {[...Array(30)].map((_, i) => (
+            {/* Create 40 enhanced sparkle particles */}
+            {[...Array(40)].map((_, i) => (
               <Sparkle key={i} />
             ))}
+            <motion.div
+              className="absolute inset-0 rounded-full border-4 border-yellow-300 opacity-50"
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 0.5 }}
+              transition={{ duration: 0.5 }}
+            />
           </motion.div>
         )}
         
         {showInspiration && (
-          <motion.p
+          <motion.div
             key="message"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className={`text-3xl font-bold ${theme.text} text-center`}
+            className="text-center max-w-2xl"
           >
-            {message}
-          </motion.p>
+            <motion.p
+              className="text-4xl font-display text-slate-800 mb-4"
+              initial={{ scale: 0.8 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.2 }}
+            >
+              {message}
+            </motion.p>
+            <motion.div
+              className="w-24 h-1 bg-gradient-to-r from-violet-500 to-pink-500 mx-auto rounded-full"
+              initial={{ width: 0 }}
+              animate={{ width: 96 }}
+              transition={{ delay: 0.5, duration: 0.8 }}
+            />
+          </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </motion.div>
   );
 };
 

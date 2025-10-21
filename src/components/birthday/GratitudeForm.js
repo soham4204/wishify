@@ -1,5 +1,6 @@
 // src/components/birthday/GratitudeForm.js
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import toast from 'react-hot-toast';
 import { saveThankYouMessage } from '../../services/firestore';
 
@@ -29,73 +30,106 @@ const GratitudeForm = ({ birthdayId, theme }) => {
 
   return (
     <>
-      {/* --- The Button (FR-17.1) --- */}
-      <div className="text-center mt-8">
-        <button
+      {/* Enhanced Button */}
+      <div className="text-center mt-12">
+        <motion.button
           onClick={() => setModalOpen(true)}
-          className={`px-8 py-3 ${theme.text} font-semibold rounded-lg shadow-md
-                      hover:opacity-90 transition-all`}
-          style={{ backgroundColor: theme.confetti[0] }}
+          className="px-8 py-4 bg-gradient-to-r from-violet-600 to-purple-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
         >
           💌 Leave a Thank You Message
-        </button>
+        </motion.button>
       </div>
 
-      {/* --- The Modal (FR-17.2) --- */}
-      {modalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-70">
-          <div 
-            className={`p-8 rounded-lg shadow-2xl ${theme.bg} w-full max-w-lg
-                        animate-enter`} // Using a simple enter animation
-            style={{ animation: 'enter 0.3s ease-out' }}
+      {/* Enhanced Modal with Glassmorphism */}
+      <AnimatePresence>
+        {modalOpen && (
+          <motion.div 
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setModalOpen(false)}
           >
-            <h2 className={`text-3xl font-bold mb-4 ${theme.text}`}>
-              Send a Thank You
-            </h2>
-            <form onSubmit={handleSubmit}>
-              <textarea
-                value={message}
-                onChange={(e) => {
-                  if (e.target.value.length <= 500) { // FR-17.3
-                    setMessage(e.target.value);
-                  }
-                }}
-                className="w-full h-40 p-3 border border-gray-300 rounded-lg shadow-inner
-                           focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Write your message to the creator..."
-              />
-              <p className="text-right text-sm text-gray-500 mt-1">
-                {message.length} / 500
-              </p>
-              <div className="flex justify-end gap-4 mt-6">
-                <button
-                  type="button"
-                  onClick={() => setModalOpen(false)}
-                  className="px-6 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400"
+            <motion.div 
+              className="glass-modal p-8 w-full max-w-lg"
+              initial={{ opacity: 0, scale: 0.8, y: 50 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.8, y: 50 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <motion.h2 
+                className="text-3xl font-display text-slate-800 mb-6 text-center"
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+              >
+                Send a Thank You
+              </motion.h2>
+              <form onSubmit={handleSubmit}>
+                <motion.textarea
+                  value={message}
+                  onChange={(e) => {
+                    if (e.target.value.length <= 500) {
+                      setMessage(e.target.value);
+                    }
+                  }}
+                  className="w-full h-40 p-4 border border-slate-200 rounded-xl shadow-inner bg-white/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-violet-500 transition-all duration-200 resize-none"
+                  placeholder="Write your message to the creator..."
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                />
+                <motion.p 
+                  className="text-right text-sm text-slate-500 mt-2"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.3 }}
                 >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  disabled={loading || message.length < 5}
-                  className="px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg 
-                             hover:bg-blue-700 disabled:bg-gray-400"
+                  {message.length} / 500
+                </motion.p>
+                <motion.div 
+                  className="flex justify-end gap-4 mt-8"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 }}
                 >
-                  {loading ? "Sending..." : "Send"}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-      {/* We need a simple animation for the modal */}
-      <style>{`
-        @keyframes enter {
-          from { opacity: 0; transform: scale(0.9); }
-          to { opacity: 1; transform: scale(1); }
-        }
-        .animate-enter { animation: enter 0.3s ease-out; }
-      `}</style>
+                  <motion.button
+                    type="button"
+                    onClick={() => setModalOpen(false)}
+                    className="px-6 py-3 bg-slate-200 text-slate-700 font-medium rounded-lg hover:bg-slate-300 transition-all duration-200"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    Cancel
+                  </motion.button>
+                  <motion.button
+                    type="submit"
+                    disabled={loading || message.length < 5}
+                    className="px-6 py-3 bg-violet-600 text-white font-semibold rounded-lg hover:bg-violet-700 disabled:bg-slate-400 disabled:cursor-not-allowed transition-all duration-200"
+                    whileHover={{ scale: loading ? 1 : 1.05 }}
+                    whileTap={{ scale: loading ? 1 : 0.95 }}
+                  >
+                    {loading ? (
+                      <div className="flex items-center space-x-2">
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                        <span>Sending...</span>
+                      </div>
+                    ) : (
+                      'Send'
+                    )}
+                  </motion.button>
+                </motion.div>
+              </form>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 };

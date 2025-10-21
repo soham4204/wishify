@@ -1,5 +1,6 @@
 // src/components/creator/PublishLink.js
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { useCreatorStore } from '../../hooks/useCreatorStore';
 import { generateUniqueId, createBirthdayPage } from '../../services/firestore';
 import toast from 'react-hot-toast';
@@ -41,41 +42,70 @@ const PublishLink = () => {
 
   if (generatedLink) {
     return (
-      <div className="w-full text-center">
-        <h2 className="text-2xl font-semibold text-green-700 mb-4">
+      <motion.div 
+        className="w-full text-center"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <motion.h2 
+          className="text-3xl font-display text-violet-700 mb-6"
+          initial={{ scale: 0.8 }}
+          animate={{ scale: 1 }}
+          transition={{ delay: 0.2 }}
+        >
           🎉 Link Created! 🎉
-        </h2>
-        <p className="mb-4">Share this link with the birthday person:</p>
-        <div className="flex w-full max-w-lg mx-auto">
+        </motion.h2>
+        <p className="mb-6 text-slate-600 font-medium">Share this link with the birthday person:</p>
+        <motion.div 
+          className="flex w-full max-w-lg mx-auto"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+        >
           <input
             type="text"
             readOnly
             value={generatedLink}
-            className="flex-grow p-3 border border-gray-300 rounded-l-lg bg-gray-50 focus:outline-none"
+            className="flex-grow p-4 border border-slate-200 rounded-l-xl bg-white/50 backdrop-blur-sm focus:outline-none text-slate-600"
           />
-          <button
+          <motion.button
             onClick={handleCopyLink}
-            className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-r-lg hover:bg-blue-700 focus:outline-none"
+            className="px-6 py-4 bg-violet-600 text-white font-semibold rounded-r-xl hover:bg-violet-700 focus:outline-none transition-all duration-200"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
           >
             Copy
-          </button>
-        </div>
-      </div>
+          </motion.button>
+        </motion.div>
+      </motion.div>
     );
   }
 
   return (
-    <div className="w-full text-center">
-      <button
+    <motion.div 
+      className="w-full text-center"
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ delay: 0.2 }}
+    >
+      <motion.button
         onClick={handleGenerateLink}
         disabled={loading}
-        className="px-10 py-4 bg-green-600 text-white text-xl font-bold rounded-lg shadow-lg 
-                   hover:bg-green-700 transition-colors
-                   disabled:bg-gray-400 disabled:animate-pulse"
+        className="btn-primary px-8 py-4 text-lg font-semibold disabled:bg-slate-400 disabled:cursor-not-allowed"
+        whileHover={{ scale: loading ? 1 : 1.05 }}
+        whileTap={{ scale: loading ? 1 : 0.95 }}
       >
-        {loading ? "Generating..." : "Generate Your Link"}
-      </button>
-    </div>
+        {loading ? (
+          <div className="flex items-center space-x-2">
+            <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+            <span>Generating...</span>
+          </div>
+        ) : (
+          '✨ Generate Your Link'
+        )}
+      </motion.button>
+    </motion.div>
   );
 };
 

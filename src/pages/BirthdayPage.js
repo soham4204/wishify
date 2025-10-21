@@ -127,7 +127,7 @@ const BirthdayPage = ({ isPreview = false }) => {
       <ConfettiAnimation themeColors={theme.confetti} />
       <BackgroundMusicPlayer musicId={pageData.settings.music} />
 
-      <h1 className={`text-5xl font-bold text-center ${theme.text} mb-4`}>
+      <h1 className={`text-6xl font-display text-center ${theme.text} mb-6`}>
         Happy Birthday, {pageData.birthdayPersonName}!
       </h1>
       <AgeDisplay age={pageData.settings.age} theme={theme} />

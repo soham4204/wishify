@@ -1,6 +1,7 @@
 // src/components/creator/PreviewButton.js
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { useCreatorStore } from '../../hooks/useCreatorStore';
 import toast from 'react-hot-toast';
 
@@ -42,13 +43,17 @@ const PreviewButton = () => {
   };
 
   return (
-    <button
+    <motion.button
       onClick={handlePreview}
-      className="px-10 py-4 bg-gray-600 text-white text-xl font-bold rounded-lg shadow-lg 
-                 hover:bg-gray-700 transition-colors"
+      className="btn-secondary px-8 py-4 text-lg font-semibold"
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ delay: 0.1 }}
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
     >
-      Preview
-    </button>
+      👁️ Preview
+    </motion.button>
   );
 };
 
