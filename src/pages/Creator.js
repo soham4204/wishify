@@ -3,17 +3,26 @@ import React from 'react';
 import NameInput from '../components/creator/NameInput';
 import ImageUpload from '../components/creator/ImageUpload';
 import ThemeSelector from '../components/creator/ThemeSelector';
-import MusicSelector from '../components/creator/MusicSelector'; // 1. Import MusicSelector
+import MusicSelector from '../components/creator/MusicSelector'; 
 import PublishLink from '../components/creator/PublishLink';
+import CustomMessageEditor from '../components/creator/CustomMessageEditor';
 import { useCreatorStore } from '../hooks/useCreatorStore';
+import MessageEditor from '../components/creator/MessageEditor';
+import DateSelector from '../components/creator/DateSelector';
+import AnalyticsToggle from '../components/creator/AnalyticsToggle';
+import LayoutSelector from '../components/creator/LayoutSelector';
+import VoiceMessageRecorder from '../components/creator/VoiceMessageRecorder';
 
 const Creator = () => {
   // 2. Get all state for the debug section
   const birthdayPersonName = useCreatorStore((state) => state.birthdayPersonName);
   const images = useCreatorStore((state) => state.images);
   const theme = useCreatorStore((state) => state.theme);
-  const music = useCreatorStore((state) => state.music); // Get music state
-
+  const music = useCreatorStore((state) => state.music); 
+  const messages = useCreatorStore((state) => state.messages);
+  const birthdayDate = useCreatorStore((state) => state.birthdayDate);
+  const customMessage = useCreatorStore((state) => state.customMessage);
+  
   return (
     <div className="p-8 min-h-screen bg-gray-50">
       <div className="max-w-4xl mx-auto">
@@ -31,6 +40,10 @@ const Creator = () => {
           <ImageUpload />
         </div>
 
+        <div className="bg-white p-8 rounded-xl shadow-lg mb-8">
+          <LayoutSelector />
+        </div>
+
         {/* --- Step 3: Theme Selection --- */}
         <div className="bg-white p-8 rounded-xl shadow-lg mb-8">
           <ThemeSelector />
@@ -39,6 +52,29 @@ const Creator = () => {
         {/* --- Step 4: Music Selection (NEW) --- */}
         <div className="bg-white p-8 rounded-xl shadow-lg mb-8">
           <MusicSelector />
+        </div>
+
+        {/* --- Step 5: Balloon Messages (NEW) --- */}
+        <div className="bg-white p-8 rounded-xl shadow-lg mb-8">
+          <MessageEditor />
+        </div>
+
+        {/* --- Step 6: Countdown Timer (NEW) --- */}
+        <div className="bg-white p-8 rounded-xl shadow-lg mb-8">
+          <DateSelector />
+        </div>
+
+        <div className="bg-white p-8 rounded-xl shadow-lg mb-8">
+          <CustomMessageEditor />
+        </div>
+
+        {/* --- Step 9: Voice Message (NEW) --- */}
+        <div className="bg-white p-8 rounded-xl shadow-lg mb-8">
+          <VoiceMessageRecorder />
+        </div>
+
+        <div className="bg-white p-8 rounded-xl shadow-lg mb-8">
+          <AnalyticsToggle />
         </div>
 
         {/* --- Step 5: Publish (was Step 4) --- */}
@@ -52,7 +88,10 @@ const Creator = () => {
           <p>Name: {birthdayPersonName || "..."}</p>
           <p>Images: {images.length}</p>
           <p>Theme: {theme}</p>
-          <p>Music: {music || 'None'}</p> {/* 4. Add music to debug */}
+          <p>Music: {music || 'None'}</p> 
+          <p>Messages: {messages.length}</p>
+          <p>Birthday Time: {birthdayDate ? birthdayDate.toString() : 'Not set'}</p>
+          <p>Custom Message: {customMessage ? 'Yes' : 'No'}</p>
         </div>
       </div>
     </div>

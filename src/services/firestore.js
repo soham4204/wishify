@@ -1,6 +1,6 @@
 // src/services/firestore.js
 import { db } from '../firebase';
-import { doc, getDoc, setDoc, serverTimestamp } from "firebase/firestore";
+import { doc, getDoc, setDoc, serverTimestamp, updateDoc, increment } from "firebase/firestore";
 import { nanoid } from 'nanoid';
 
 /**
@@ -47,7 +47,8 @@ export const createBirthdayPage = async (id, data) => {
     createdAt: serverTimestamp(),
     birthdayPersonName: data.birthdayPersonName,
     theme: data.theme,
-    images: data.images || [], // Array of { url, id }
+    images: data.images || [],
+    photoLayout: data.photoLayout,
 
     // Phase 2 & 3 data
     messages: data.messages || [],
@@ -55,6 +56,7 @@ export const createBirthdayPage = async (id, data) => {
       music: data.music || null,
       birthdayDate: data.birthdayDate || null,
       age: data.age || null,
+      showViewCount: data.showViewCount,
     },
     voiceMessage: data.voiceMessage || null,
     creatorName: data.creatorName || '',
@@ -80,5 +82,47 @@ export const getBirthdayPage = async (id) => {
     return docSnap.data(); // Return the data if found
   } else {
     return null; // FR-9.4: Return null if no doc
+  }
+};
+
+// --- NEW FUNCTION (FR-16.1) ---
+/**
+ * Atomically increments the view count for a birthday page.
+ * This is "atomic," meaning it's safe from race conditions.
+ * @param {string} id - The document ID
+ */
+export const incrementViewCount = async (id) => {
+  if (!id) return;
+  const docRef = doc(db, "birthdays", id);
+
+  try {
+    await updateDoc(docRef, {
+      viewCount: increment(1) // Atomically increments the field
+    });
+  } catch (error) {
+    // This might fail if the document doesn't exist, but that's okay.
+    console.warn("Could not increment view count:", error.message);
+  }
+};
+
+/**
+ * Saves the birthday person's thank you message to the document.
+ * @param {string} id - The document ID
+ * @param {string} message - The thank you message
+ */
+export const saveThankYouMessage = async (id, message) => {
+  if (!id || !message) return;
+  const docRef = doc(db, "birthdays", id);
+
+  try {
+    await updateDoc(docRef, {
+      thankYouMessage: {
+        content: message,
+        timestamp: serverTimestamp() // FR-17.6
+      }
+    });
+  } catch (error) {
+    console.error("Error saving thank you message:", error);
+    throw new Error("Could not save thank you message.");
   }
 };

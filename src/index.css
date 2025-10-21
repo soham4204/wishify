@@ -52,3 +52,173 @@
     background: #ffecb3;
   }
 }
+
+/* --- Balloon Animation CSS (FR-11.2) --- */
+.balloon {
+  position: absolute;
+  width: 100px;
+  height: 120px;
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  user-select: none;
+  bottom: -150px; /* Start off-screen */
+  animation: float 15s ease-in-out infinite;
+  pointer-events: auto;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  z-index: 10;
+}
+
+/* Balloon string */
+.balloon::after {
+  content: '';
+  position: absolute;
+  top: 118px; /* Just below the balloon */
+  left: 50%;
+  width: 2px;
+  height: 80px;
+  background: rgba(0, 0, 0, 0.2);
+  transform: translateX(-50%);
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-110vh) rotate(20deg);
+  }
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+/* Pop Animation (FR-11.4) */
+.balloon.popped {
+  transform: scale(1.5);
+  opacity: 0;
+}
+
+@keyframes slide-in-right {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-in-right {
+  animation: slide-in-right 0.3s ease-out;
+}
+
+.rendered-message p {
+  font-size: 1.125rem; /* 18px */
+  line-height: 1.75;
+  margin-bottom: 1rem;
+}
+
+.rendered-message h1 {
+  font-size: 1.875rem; /* 30px */
+  font-weight: 700;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.rendered-message h2 {
+  font-size: 1.5rem; /* 24px */
+  font-weight: 600;
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.rendered-message ul,
+.rendered-message ol {
+  list-style-position: inside;
+  margin-left: 1rem;
+  margin-bottom: 1rem;
+}
+
+.rendered-message li {
+  margin-bottom: 0.5rem;
+}
+
+.rendered-message strong {
+  font-weight: 700;
+}
+
+.rendered-message em {
+  font-style: italic;
+}
+
+.timeline-container {
+  position: relative;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* The vertical line */
+.timeline-container::after {
+  content: '';
+  position: absolute;
+  width: 4px;
+  background-color: #cbd5e1; /* gray-300 */
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  margin-left: -2px;
+}
+
+/* A single timeline item */
+.timeline-item {
+  position: relative;
+  padding: 10px 40px;
+  width: 50%;
+}
+
+/* Place items on the left */
+.timeline-item.left {
+  left: 0;
+  text-align: right;
+}
+
+/* Place items on the right */
+.timeline-item.right {
+  left: 50%;
+  text-align: left;
+}
+
+/* The "dot" on the timeline (FR-20.5) */
+.timeline-item::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  right: -10px;
+  background-color: white;
+  border: 4px solid #3b82f6; /* blue-500 */
+  top: 20px;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+/* Dot position for right items */
+.timeline-item.right::after {
+  left: -10px;
+}
+
+/* The content box */
+.timeline-content {
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+}

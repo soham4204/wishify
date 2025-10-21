@@ -13,7 +13,6 @@ import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 const PhotoCarousel = ({ images }) => {
   const displayImages = images.length > 0 ? images : [
     { id: 'default1', url: 'https://images.unsplash.com/photo-1513151233558-d860c5398176?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80' },
-    { id: 'default2', url: 'https://images.unsplash.com/photo-1549465220-1a8a9238cd48?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80' },
     { id: 'default3', url: 'https://images.unsplash.com/photo-1464349153735-7db50ed83c84?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80' },
   ];
 
