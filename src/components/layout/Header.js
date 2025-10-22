@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import logo from '../../assets/logo.png'
 
 // Enhanced Header Component
 const Header = () => {
@@ -13,9 +14,13 @@ const Header = () => {
           {/* Logo */}
           <Link 
             to="/" 
-            className="flex items-center space-x-2 group"
+            className="flex items-center group"
           >
-            <span className="text-4xl translate-y-[2px] group-hover:scale-110 transition-transform">🎉</span>
+            <img 
+            src={logo} 
+            alt="Wishify Logo" 
+            className="h-16 w-16 object-contain group-hover:scale-110 transition-transform"
+            />
             <span className="text-2xl md:text-3xl font-display font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent py-2">
               Wishify
             </span>
