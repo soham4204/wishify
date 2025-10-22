@@ -7,7 +7,6 @@ import ThemeSelector from '../components/creator/ThemeSelector';
 import MusicSelector from '../components/creator/MusicSelector'; 
 import PublishLink from '../components/creator/PublishLink';
 import CustomMessageEditor from '../components/creator/CustomMessageEditor';
-import { useCreatorStore } from '../hooks/useCreatorStore';
 import MessageEditor from '../components/creator/MessageEditor';
 import DateSelector from '../components/creator/DateSelector';
 import AnalyticsToggle from '../components/creator/AnalyticsToggle';
@@ -17,15 +16,6 @@ import AgeInput from '../components/creator/AgeInput';
 import PreviewButton from '../components/creator/PreviewButton';
 
 const Creator = () => {
-  // 2. Get all state for the debug section
-  const birthdayPersonName = useCreatorStore((state) => state.birthdayPersonName);
-  const images = useCreatorStore((state) => state.images);
-  const theme = useCreatorStore((state) => state.theme);
-  const music = useCreatorStore((state) => state.music); 
-  const messages = useCreatorStore((state) => state.messages);
-  const birthdayDate = useCreatorStore((state) => state.birthdayDate);
-  const customMessage = useCreatorStore((state) => state.customMessage);
-
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -73,8 +63,10 @@ const Creator = () => {
         >
           {/* --- Step 1: Name Input --- */}
           <motion.div variants={itemVariants} className="glass-panel p-8">
-            <NameInput />
-            <AgeInput />
+            <div className="flex flex-col space-y-6">
+              <NameInput />
+              <AgeInput />
+            </div>
           </motion.div>
           
           {/* --- Step 2: Image Upload --- */}
@@ -123,23 +115,9 @@ const Creator = () => {
           <motion.div variants={itemVariants} className="glass-panel p-8">
             <div className="flex flex-col md:flex-row gap-6 justify-center">
               <PreviewButton />
-              <PublishLink />
+              
             </div>
-          </motion.div>
-
-          {/* --- Debugging: Show current state (Optional) --- */}
-          <motion.div variants={itemVariants} className="glass-panel p-6">
-            <h3 className="font-semibold text-slate-800 mb-4">Current Data:</h3>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm text-slate-600">
-              <p><span className="font-medium">Name:</span> {birthdayPersonName || "..."}</p>
-              <p><span className="font-medium">Images:</span> {images.length}</p>
-              <p><span className="font-medium">Theme:</span> {theme}</p>
-              <p><span className="font-medium">Music:</span> {music || 'None'}</p> 
-              <p><span className="font-medium">Messages:</span> {messages.length}</p>
-              <p><span className="font-medium">Birthday Time:</span> {birthdayDate ? birthdayDate.toString() : 'Not set'}</p>
-              <p><span className="font-medium">Custom Message:</span> {customMessage ? 'Yes' : 'No'}</p>
-            </div>
-          </motion.div>
+          </motion.div><PublishLink />
         </motion.div>
       </div>
     </div>

@@ -8,7 +8,7 @@ const AgeInput = () => {
   const setAge = useCreatorStore((state) => state.setAge);
 
   return (
-    <div className="w-full mt-6">
+    <div className="w-full">
       <motion.label 
         className="block text-xl font-semibold text-slate-800 mb-3"
         initial={{ opacity: 0, y: 10 }}
@@ -32,7 +32,7 @@ const AgeInput = () => {
         value={age || ''}
         onChange={(e) => setAge(e.target.value)}
         placeholder="e.g., 30"
-        className="w-full max-w-xs px-4 py-3 text-lg border border-slate-200 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-violet-500 transition-all duration-200"
+        className="w-full px-4 py-3 text-lg border border-slate-200 rounded-lg focus:ring-2 focus:ring-violet-500 focus:border-violet-500 transition-all duration-200"
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.3 }}

@@ -15,7 +15,7 @@ const NameInput = () => {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto">
+    <div className="w-full">
       <motion.label 
         htmlFor="birthday-name" 
         className="block text-xl font-semibold text-slate-800 mb-3"

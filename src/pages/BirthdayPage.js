@@ -4,6 +4,7 @@ import { useParams, useLocation } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { getBirthdayPage, incrementViewCount } from '../services/firestore';
 import NotFound from './NotFound';
+import { motion } from 'framer-motion';
 import { THEMES } from '../constants/themes';
 import ConfettiAnimation from '../components/birthday/ConfettiAnimation';
 import PhotoCarousel from '../components/birthday/PhotoCarousel';
@@ -113,68 +114,125 @@ const BirthdayPage = ({ isPreview = false }) => {
 
   const pageTitle = `Happy Birthday, ${pageData.birthdayPersonName}!`;
 
+  const cardVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: (i) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: i * 0.2,
+        type: 'spring',
+        stiffness: 100,
+      },
+    }),
+  };
+
   return (
+    // Main page container
     <div
-      className={`p-8 min-h-screen transition-colors duration-500 ${theme.bg} overflow-hidden`}
+      className={`min-h-screen transition-colors duration-500 ${theme.bg} overflow-x-hidden`}
     >
       <Helmet>
         <title>{pageTitle}</title>
-        <meta name="description" content={`Celebrate ${pageData.birthdayPersonName}'s special day!`} />
-        <meta property="og:title" content={pageTitle} />
-        <meta property="og:url" content={currentPageUrl} />
+         <meta name="description" content={`Celebrate ${pageData.birthdayPersonName}'s special day!`} />
+         <meta property="og:title" content={pageTitle} />
+         <meta property="og:url" content={currentPageUrl} />
+         {/* Add preview image to meta */}
+         <meta property="og:image" content={pageData.images[0]?.url || 'default-preview-image.jpg'} />
       </Helmet>
-
+      
+      {/* Background/Overlay Components */}
       <ConfettiAnimation themeColors={theme.confetti} />
       <BackgroundMusicPlayer musicId={pageData.settings.music} />
-
-      <h1 className={`text-6xl font-display text-center ${theme.text} mb-6`}>
-        Happy Birthday, {pageData.birthdayPersonName}!
-      </h1>
-      <AgeDisplay age={pageData.settings.age} theme={theme} />
-
-      <VoiceMessagePlayer url={pageData.voiceMessage} theme={theme} />
-
-      <CustomMessageDisplay
-        htmlContent={pageData.customMessage}
-        theme={theme}
-      />
-
-      {pageData.photoLayout === 'timeline' ? (
-        <PhotoTimeline images={pageData.images} theme={theme} />
-      ) : (
-        <PhotoCarousel images={pageData.images} />
-      )}
-
       <MessageBalloons messages={pageData.messages} themeId={pageData.theme} />
 
-      <DigitalCake />
-
-      <MakeAWish theme={theme} />
-
-      <footer className="mt-16 text-center">
-        {!pageData.thankYouMessage && (
-          <GratitudeForm birthdayId={birthdayId} theme={theme} />
-        )}
-
-        {pageData.thankYouMessage && (
-          <div
-            className={`p-6 bg-white bg-opacity-70 rounded-lg shadow-xl backdrop-blur-sm max-w-2xl mx-auto`}
-          >
-            <h3 className={`text-2xl font-bold ${theme.text} mb-3`}>
-              A Message from {pageData.birthdayPersonName}
-            </h3>
-            <p className={`text-lg ${theme.text} italic`}>
-              "{pageData.thankYouMessage.content}"
-            </p>
+      {/* --- Main Content Container --- */}
+      <main className="relative z-10 p-4 md:p-8 max-w-5xl mx-auto flex flex-col gap-10">
+        
+        <motion.section
+          className={`p-6 md:p-10 rounded-xl shadow-2xl ${theme.cardBg}`}
+          variants={cardVariants}
+          initial="hidden"
+          animate="visible"
+          custom={1}
+        >
+          <h1 className={`text-5xl md:text-7xl font-display text-center ${theme.textPrimary} mb-6`}>
+            Happy Birthday, {pageData.birthdayPersonName}!
+          </h1>
+          <AgeDisplay age={pageData.settings.age} theme={theme} />
+          
+          <div className="mt-8 space-y-8">
+            <VoiceMessagePlayer url={pageData.voiceMessage} theme={theme} />
+            <CustomMessageDisplay
+              htmlContent={pageData.customMessage}
+              theme={theme}
+            />
           </div>
-        )}
+        </motion.section>
 
-        {pageData.settings.showViewCount && (
-          <p className={`${theme.text} opacity-70 mb-6`}>
-            👀 Seen {viewCount} times
-          </p>
-        )}
-      </footer>
+        {/* --- Card 2: Memories --- */}
+        <motion.section
+          className={`p-6 md:p-10 rounded-xl shadow-2xl ${theme.cardBg}`}
+          variants={cardVariants}
+          initial="hidden"
+          animate="visible"
+          custom={2}
+        >
+          <h2 className={`text-4xl font-display text-center ${theme.textAccent} mb-8`}>
+            A Look Back...
+          </h2>
+          {pageData.photoLayout === 'timeline' ? (
+            <PhotoTimeline images={pageData.images} theme={theme} />
+          ) : (
+            <PhotoCarousel images={pageData.images} />
+          )}
+        </motion.section>
+
+        {/* --- Card 3: Activities --- */}
+        <motion.section
+          className={`p-6 md:p-10 rounded-xl shadow-2xl ${theme.cardBg}`}
+          variants={cardVariants}
+          initial="hidden"
+          animate="visible"
+          custom={3}
+        >
+          <h2 className={`text-4xl font-display text-center ${theme.textAccent} mb-8`}>
+            Time to Celebrate!
+          </h2>
+          <DigitalCake />
+          <MakeAWish theme={theme} />
+        </motion.section>
+
+        {/* --- Footer & Gratitude --- */}
+        <footer className="mt-8 text-center space-y-6">
+          {!pageData.thankYouMessage && (
+            <GratitudeForm birthdayId={birthdayId} theme={theme} />
+          )}
+
+          {pageData.thankYouMessage && (
+            <motion.div
+              className={`p-6 md:p-10 rounded-xl shadow-2xl ${theme.cardBg}`}
+              variants={cardVariants}
+              initial="hidden"
+              animate="visible"
+              custom={4}
+            >
+              <h3 className={`text-3xl font-display ${theme.textAccent} mb-4`}>
+                A Message from {pageData.birthdayPersonName}
+              </h3>
+              <p className={`text-xl ${theme.textPrimary} italic`}>
+                "{pageData.thankYouMessage.content}"
+              </p>
+            </motion.div>
+          )}
+
+          {pageData.settings.showViewCount && (
+            <p className={`${theme.textPrimary} opacity-60`}>
+              👀 Seen {viewCount} times
+            </p>
+          )}
+        </footer>
+      </main>
     </div>
   );
 };

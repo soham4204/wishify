@@ -74,7 +74,7 @@ const MakeAWish = ({ theme }) => {
             key="button"
             exit={{ opacity: 0, scale: 0.5 }}
             onClick={handleWish}
-            className="px-12 py-6 bg-gradient-to-r from-violet-600 via-purple-600 to-pink-600 text-white font-bold text-2xl rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105"
+            className="px-12 py-6 bg-pink-600 text-white font-bold text-2xl rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             initial={{ opacity: 0, scale: 0.8 }}
