@@ -6,7 +6,7 @@ With this platform, users can build a custom page filled with **photos, music, m
 ---
 
 ## 🚀 Live Demo  
-👉 [https://your-vercel-app-name.vercel.app/](https://your-vercel-app-name.vercel.app/)  
+👉 [https://your-vercel-app-name.vercel.app/](https://wishify-three.vercel.app)  
 *(Replace the link above with your actual deployed Vercel URL.)*
 
 ---
